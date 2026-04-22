@@ -1,9 +1,19 @@
 import os
 from openai import OpenAI
 
+_api_key = os.getenv("OPENROUTER_API_KEY")
+if not _api_key:
+    print("[STARTUP ERROR] OPENROUTER_API_KEY is not set or empty!")
+else:
+    print(f"[STARTUP] OPENROUTER_API_KEY loaded (starts with: {_api_key[:10]}...)")
+
 client = OpenAI(
-    api_key=os.getenv("OPENROUTER_API_KEY"),
+    api_key=_api_key,
     base_url="https://openrouter.ai/api/v1",
+    default_headers={
+        "HTTP-Referer": "https://whatsapp-automation-jsy3.onrender.com",
+        "X-Title": "WhatsApp Bot",
+    },
 )
 
 # Load knowledge base once at startup
