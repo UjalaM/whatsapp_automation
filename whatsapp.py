@@ -6,9 +6,12 @@ auth_token = os.getenv("TWILIO_AUTH")
 
 client = Client(account_sid, auth_token)
 
-def send_whatsapp_message(to, message):
+TWILIO_FROM = "whatsapp:+14155238886"
+
+
+def send_whatsapp_message(to: str, message: str) -> None:
     client.messages.create(
         body=message,
-        from_='whatsapp:+14155238886',  # Twilio sandbox number
-        to=f'whatsapp:{to}'
+        from_=TWILIO_FROM,
+        to=f"whatsapp:{to}",
     )

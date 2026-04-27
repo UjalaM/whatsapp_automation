@@ -199,18 +199,25 @@ def get_reply(phone: str, message: str) -> str:
     if step == "sector_menu":
         sector = state["sector"]
 
-        if msg == "1":
+        PRICING_TRIGGERS = {"1", "pricing", "price", "cost", "charges", "rate", "fees", "how much", "tariff", "services"}
+        TIMING_TRIGGERS  = {"2", "timing", "timings", "time", "location", "hours", "address", "where", "open", "area", "areas"}
+        BOOK_TRIGGERS    = {"3", "book", "booking", "appointment", "schedule", "visit", "appoint", "book appointment", "book service"}
+        ASK_TRIGGERS     = {"4", "ask", "question", "query", "other", "something else"}
+
+        msg_lower_stripped = msg_lower.strip()
+
+        if msg_lower_stripped in PRICING_TRIGGERS or any(t in msg_lower_stripped for t in PRICING_TRIGGERS if len(t) > 2):
             return SECTOR_INFO[sector]["pricing"]
 
-        elif msg == "2":
+        elif msg_lower_stripped in TIMING_TRIGGERS or any(t in msg_lower_stripped for t in TIMING_TRIGGERS if len(t) > 3):
             return SECTOR_INFO[sector]["timing"]
 
-        elif msg == "3":
+        elif msg_lower_stripped in BOOK_TRIGGERS or any(t in msg_lower_stripped for t in BOOK_TRIGGERS if len(t) > 3):
             state["step"] = "lead_name"
             label = SECTOR_LABEL[sector]
             return f"Great! Let's get your {label} scheduled. 📋\n\nFirst, may I know your *name*?"
 
-        elif msg == "4":
+        elif msg_lower_stripped in ASK_TRIGGERS:
             state["step"] = "llm"
             return "Sure! Go ahead and type your question 👇"
 
@@ -288,7 +295,7 @@ def _llm_reply(state: dict, message: str) -> str:
 
     try:
         response = client.chat.completions.create(
-            model="meta-llama/llama-3.1-8b-instruct:free",
+            model="google/gemini-2.0-flash-exp:free",
             messages=messages,
             temperature=0.4,
             max_tokens=400,
