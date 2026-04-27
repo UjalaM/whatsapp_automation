@@ -295,7 +295,7 @@ def _llm_reply(state: dict, message: str) -> str:
 
     try:
         response = client.chat.completions.create(
-            model="google/gemma-3-27b-it:free",
+            model="openai/gpt-4o-mini",
             messages=messages,
             temperature=0.4,
             max_tokens=400,
