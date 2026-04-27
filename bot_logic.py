@@ -299,6 +299,11 @@ def _llm_reply(state: dict, message: str) -> str:
             messages=messages,
             temperature=0.4,
             max_tokens=400,
+            extra_body={
+                "provider": {
+                    "ignore": ["Venice"]
+                }
+            },
         )
         reply = response.choices[0].message.content.strip()
     except Exception as e:
