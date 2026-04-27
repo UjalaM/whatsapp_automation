@@ -295,7 +295,7 @@ def _llm_reply(state: dict, message: str) -> str:
 
     try:
         response = client.chat.completions.create(
-            model="google/gemini-2.0-flash-exp:free",
+            model="meta-llama/llama-3.3-70b-instruct:free",
             messages=messages,
             temperature=0.4,
             max_tokens=400,
